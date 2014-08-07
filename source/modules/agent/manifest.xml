@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://www.we7.cc" versionCode="0.51,0.52">
+	<application setting="true">
+		<name><![CDATA[代理商]]></name>
+		<identifie><![CDATA[agent]]></identifie>
+		<version><![CDATA[0.1]]></version>
+		<type><![CDATA[customer]]></type>
+		<ability><![CDATA[代理商管理用户]]></ability>
+		<description><![CDATA[添加代理商管理系统用户]]></description>
+		<author><![CDATA[alvin]]></author>
+		<url><![CDATA[]]></url>
+	</application>
+	<platform>
+		<subscribes>
+		</subscribes>
+		<handles>
+		</handles>
+		<rule embed="false" />
+	</platform>
+	<bindings>
+		<menu>
+			<entry title="用户管理" do="user" />
+		</menu>
+	</bindings>
+    <install><![CDATA[
+CREATE TABLE IF NOT EXISTS `ims_agent` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` int(10) NOT NULL,
+  `site_url` varchar(50) NOT NULL,
+  `site_name` varchar(50) NOT NULL,
+  `meta_title` varchar(255) NOT NULL,
+  `meta_keywords` varchar(255) NOT NULL,
+  `meta_description` varchar(255) NOT NULL,
+  `qq` varchar(15) NOT NULL,
+  `qq1` varchar(15) NOT NULL,
+  `qq2` varchar(15) NOT NULL,
+  `qq3` varchar(15) NOT NULL,
+  `qq4` varchar(15) NOT NULL,
+  `qq5` varchar(15) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `address` varchar(300) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `logo` varchar(200) NOT NULL,
+  `style` varchar(300) NOT NULL,
+  `balance` double(9,2) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `ims_agent_user` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `agent_uid` int(10) NOT NULL,
+  `uid` int(10) NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY(`uid`) REFERENCES ims_members(`uid`),
+  FOREIGN KEY(`agent_uid`) REFERENCES ims_members(`uid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `ims_agent_payment` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `agent_uid` int(10) NOT NULL,
+  `group_id` int(10) NOT NULL,
+  `amount_needs` double(9,2) NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY(`agent_uid`) REFERENCES ims_members(`uid`),
+  FOREIGN KEY(`group_id`) REFERENCES ims_members_group(`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `ims_agent_log` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `agent_uid` int(10) NOT NULL,
+  `log` text NOT NULL,
+  `datetime` int(10) NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY(`agent_uid`) REFERENCES ims_members(`uid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+]]></install>
+    <uninstall><![CDATA[
+DROP TABLE if EXISTS `ims_agent`;
+DROP TABLE if EXISTS `ims_agent_user`;
+DROP TABLE if EXISTS `ims_agent_payment`;
+DROP TABLE if EXISTS `ims_agent_log`;
+    ]]></uninstall>
+	<upgrade><![CDATA[]]></upgrade>
+</manifest>
